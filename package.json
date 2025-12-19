@@ -1,0 +1,26 @@
+{
+  "name": "first",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeverSpot/carrot-on-cloud.git"
+  },
+  "private": true,
+  "dependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.16.0"
+  },
+  "bugs": {
+    "url": "https://github.com/NeverSpot/carrot-on-cloud/issues"
+  },
+  "homepage": "https://github.com/NeverSpot/carrot-on-cloud#readme",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
