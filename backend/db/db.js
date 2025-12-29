@@ -2,7 +2,9 @@ import pool from "./mysql.js";
 import getDateForContest from "../cal.js";
 
 export async function pushContestData(contestId) {
+
     const contestData = await getDateForContest(contestId);
+
 
     const sql = `
     INSERT INTO contest_results
@@ -15,14 +17,40 @@ export async function pushContestData(contestId) {
   `;
 
     for (const user of contestData) {
-        await pool.execute(sql, [
-            contestId,
-            user.handle,
-            user.performance,
-            user.delta,
-            user.rating
-        ]);
+        try {
+            const [res] = await pool.execute(sql, [
+                contestId,
+                user.handle,
+                user.performance,
+                user.delta,
+                user.rating || null
+            ]);
+
+            console.log(
+                user.handle,
+                "affected:", res.affectedRows,
+                "changed:", res.changedRows
+            );
+
+        } catch (err) {
+            console.error("❌ SQL ERROR for user:", user.handle);
+            console.error("code:", err.code);
+            console.error("errno:", err.errno);
+            console.error("sqlState:", err.sqlState);
+            console.error("sqlMessage:", err.sqlMessage);
+            console.error("query:", err.sql);
+            console.error("params:", [
+                contestId,
+                user.handle,
+                user.performance,
+                user.delta,
+                user.rating
+            ]);
+
+            throw err; // rethrow so you don't silently ignore corruption
+        }
     }
+
 }
 // await pushContestData(2176);
 
@@ -37,12 +65,14 @@ export async function contestExists(contestId) {
 
 // Do the query
 export async function queryContestResults(contestID, userList) {
+
     if (!userList || userList.length === 0) {
         return [];
     }
     if(await contestExists(contestID)===false){
         await pushContestData(contestID);
     }
+
 
     const placeholders = userList.map(() => "?").join(",");
 
