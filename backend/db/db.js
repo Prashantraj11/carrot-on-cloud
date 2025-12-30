@@ -55,6 +55,7 @@ export async function pushContestData(contestId) {
 // await pushContestData(2176);
 
 async function contestNeedsRefresh(contestId) {
+
     const [rows] = await pool.execute(
         `
         SELECT MAX(updated_at) AS last_update
@@ -63,6 +64,7 @@ async function contestNeedsRefresh(contestId) {
         `,
         [contestId]
     );
+
 
     const lastUpdate = rows[0].last_update;
     if (!lastUpdate) {
@@ -74,7 +76,7 @@ async function contestNeedsRefresh(contestId) {
     const fiveMinutes = 5 * 60 * 1000;
     const tenHours = 10 * 60 * 60 * 1000;
 
-    return diffMs > fiveMinutes && diffMs <= tenHours;
+    return fiveMinutes<diffMs  && diffMs <= tenHours;
 }
 
 
@@ -84,10 +86,10 @@ export async function queryContestResults(contestID, userList) {
     if (!userList || userList.length === 0) {
         return [];
     }
-    if(await contestNeedsRefresh(contestID)===false){
+
+    if(await contestNeedsRefresh(contestID)){
         await pushContestData(contestID);
     }
-
 
 
     const placeholders = userList.map(() => "?").join(",");
