@@ -24,7 +24,7 @@ for(const user of table){
 }
 
 const queryData={contestId,userList:[...userList]};
-const jsonReq=JSON.stringify(queryData);
+
 
 
 fetch("http://127.0.0.1:3000/contest",{
@@ -32,7 +32,7 @@ fetch("http://127.0.0.1:3000/contest",{
     headers: {
         'Content-Type': 'application/json', // Indicate the content type
     },
-    body:jsonReq,
+    body:JSON.stringify(queryData),
 }).then(res=>res.json())
     .then((res)=> {
         console.log(res)
