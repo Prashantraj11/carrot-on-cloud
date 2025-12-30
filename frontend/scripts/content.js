@@ -55,7 +55,8 @@ function updatePage(res){
     }
 }
 
-fetch("http://127.0.0.1:3000/contest",{
+const apiURL="http://127.0.0.1:3000/contest";
+fetch(apiURL,{
     method:"POST",
     headers: {
         'Content-Type': 'application/json', // Indicate the content type
