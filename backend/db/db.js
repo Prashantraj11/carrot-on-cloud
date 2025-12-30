@@ -54,12 +54,27 @@ export async function pushContestData(contestId) {
 }
 // await pushContestData(2176);
 
-export async function contestExists(contestId) {
+async function contestNeedsRefresh(contestId) {
     const [rows] = await pool.execute(
-        "SELECT 1 FROM contest_results WHERE contest_id = ? LIMIT 1",
+        `
+        SELECT MAX(updated_at) AS last_update
+        FROM contest_results
+        WHERE contest_id = ?
+        `,
         [contestId]
     );
-    return rows.length > 0;
+
+    const lastUpdate = rows[0].last_update;
+    if (!lastUpdate) {
+        return true; // no data → must fetch
+    }
+
+    const diffMs = Date.now() - new Date(lastUpdate).getTime();
+
+    const fiveMinutes = 5 * 60 * 1000;
+    const tenHours = 10 * 60 * 60 * 1000;
+
+    return diffMs > fiveMinutes && diffMs <= tenHours;
 }
 
 
@@ -69,9 +84,10 @@ export async function queryContestResults(contestID, userList) {
     if (!userList || userList.length === 0) {
         return [];
     }
-    if(await contestExists(contestID)===false){
+    if(await contestNeedsRefresh(contestID)===false){
         await pushContestData(contestID);
     }
+
 
 
     const placeholders = userList.map(() => "?").join(",");
