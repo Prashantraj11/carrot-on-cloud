@@ -20,7 +20,7 @@ Carrot on Cloud computes contest data once per contest and distributes the resul
 - **Database**: MySQL used to cache contest results and computed metrics.
 ## High-Level Architecture
 
-<img width="500" height="600" alt="carrot" src="https://github.com/user-attachments/assets/5d49adba-3b91-4ce5-9506-1c7a7b6e1958" />
+<img width="600" height="500" alt="carrot" src="https://github.com/user-attachments/assets/5d49adba-3b91-4ce5-9506-1c7a7b6e1958" />
 
 ## Data Flow
 
