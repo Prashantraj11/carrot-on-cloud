@@ -16,7 +16,6 @@ const table = document.querySelectorAll(".standings tbody .contestant-cell")
 for(const user of table){
     userList.add(user.textContent.replace(/[ *#]/g, "").trim());
 }
-
 const queryData={contestId,userList:[...userList]};
 
 function updatePage(res){
@@ -110,7 +109,7 @@ fetch(apiURL,{
     body:JSON.stringify(queryData),
 }).then(res=>res.json())
     .then((res)=> {
-        console.log(res)
+        // console.log(res)
         updatePage(res);
     }) .catch(error => {
     console.error('Error fetching data:', error); // Handle network errors

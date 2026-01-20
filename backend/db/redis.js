@@ -22,4 +22,3 @@ await client.flushAll('SYNC');
 console.log("✅ RedIs is connected !!!!")
 export  default  client;
 
-

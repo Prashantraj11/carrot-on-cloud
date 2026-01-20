@@ -6,7 +6,7 @@ async function sleep(ms){
     return new Promise(resolve => setTimeout(resolve,ms));
 }
 
-export async function pushContestData(contestId) {
+export async function pushContestData(contestId){
 
     const contestData = await getDateForContest(contestId);
 
@@ -46,9 +46,9 @@ async function contestNeedsRefresh(contestId) {
 
     const [rows] = await pool.execute(
         `
-        SELECT MAX(updated_at) AS last_update
-        FROM contest_results
-        WHERE contest_id = ?
+            SELECT MAX(updated_at) AS last_update
+            FROM contest_results
+            WHERE contest_id = ?
         `,
         [contestId]
     );
@@ -100,7 +100,6 @@ export async function queryContestResults(contestID, userList) {
             }
         }
     }
-
 
 
 
